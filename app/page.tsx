@@ -3,12 +3,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Copy } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
 export default function Home() {
   const [originalUrl, setOriginalUrl] = useState("")
   const [shortUrl, setShortUrl] = useState<string | null>(null)
+  const [shortCode, setShortCode] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [isCopied, setIsCopied] = useState<boolean>(false)
@@ -31,6 +33,7 @@ export default function Home() {
         setError(data.error || "Something went wrong")
       } else {
         setShortUrl(data.short_url)
+        setShortCode(data.code)
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
@@ -52,7 +55,7 @@ export default function Home() {
 
   return (
     <>
-      <header className="mb-12 flex flex-col space-y-8 justify-start items-center">
+      <header className="mb-12 flex flex-col space-y-5 justify-start items-center">
         <div className="text-center">
           <p className="font-bold text-2xl capitalize text-stone-800 dark:text-stone-100">
             URL Shortener
@@ -85,21 +88,26 @@ export default function Home() {
       )}
 
       {shortUrl && (
-        <div className="flex space-x-4 justify-center items-center py-2 mt-8">
-          <p className=" text-green-600">
-            Shortened URL:{" "}
-            <Link href={shortUrl} target="_blank" className="font-semibold underline">
-              {shortUrl}
-            </Link>
-          </p>
+        <>
+          <div className="flex space-x-4 justify-center items-center py-2 mt-4">
+            <p className=" text-green-600">
+              Shortened URL:{" "}
+              <Link href={shortUrl} target="_blank" className="font-semibold underline">
+                {shortUrl}
+              </Link>
+            </p>
 
-          <Button className="w-[40x] h-[40px]" variant={'outline'} onClick={() => handleCopy()}>
-            <Copy/>
-          </Button>
-        </div>
+            <Button className="w-[40x] h-[40px]" variant={'outline'} onClick={() => handleCopy()}>
+              <Copy/>
+            </Button>
+          </div>
+          <span className={`text-sm ${isCopied ? 'text-foreground': 'text-background '} transition-colors  duration-300`}>Link copied!</span>
+          <div className="flex mt-4 flex-col justify-center items-center">
+            <span className="text-muted-foreground mb-3">or Scan me</span>
+          <Image src={`/api/qr?code=${shortCode}`} width={200} height={200} alt="qr code" className="p-1 rounded-lg bg-gray-50 border dark:bg-gray-100"/>
+          </div>
+        </>
       )}
-
-        <span className={`text-sm ${isCopied ? 'text-foreground': 'text-background '} transition-colors  duration-300`}>Link copied!</span>
     </>
   );
 }

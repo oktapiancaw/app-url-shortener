@@ -12,7 +12,7 @@ function normalizeUrl(url: string): string {
 export async function shortenerMiddleware(req: NextRequest) {
   const url = req.nextUrl.clone()
 
-  if (url.pathname !== "/" && !url.pathname.startsWith("/api")) {
+  if (url.pathname !== "/" && (!url.pathname.startsWith("/api/qr") || !url.pathname.startsWith("/api/shorten") )) {
     const code = url.pathname.slice(1) // ambil kode tanpa "/"
 
     const { data } = await supabase

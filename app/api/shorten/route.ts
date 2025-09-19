@@ -22,7 +22,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Original URL required" }, { status: 400 })
   }
 
-  // ✅ enforce domain restriction
   if (!isAllowedDomain(original_url)) {
     return NextResponse.json(
       { error: "Only URLs from oxtcaw.com or its subdomains are allowed" },
@@ -44,6 +43,7 @@ export async function POST(req: Request) {
 
   return NextResponse.json({
     short_url: `${process.env.NEXT_PUBLIC_BASE_URL}/${data.short_code}`,
-    original_url: data.original_url
+    original_url: data.original_url,
+    code: short_code
   })
 }
