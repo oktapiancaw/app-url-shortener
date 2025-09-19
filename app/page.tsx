@@ -89,7 +89,7 @@ export default function Home() {
 
       {shortUrl && (
         <>
-          <div className="flex space-x-4 justify-center items-center py-2 mt-4">
+          <div className="flex space-x-4 justify-center items-center py-2 mt-1">
             <p className=" text-green-600">
               Shortened URL:{" "}
               <Link href={shortUrl} target="_blank" className="font-semibold underline">
@@ -103,7 +103,7 @@ export default function Home() {
           </div>
           <span className={`text-sm ${isCopied ? 'text-foreground': 'text-background '} transition-colors  duration-300`}>Link copied!</span>
           <div className="flex mt-4 flex-col justify-center items-center">
-            <span className="text-muted-foreground mb-3">or Scan me</span>
+            <span className="text-muted-foreground mb-2">or Scan me</span>
           <Image src={`/api/qr?code=${shortCode}`} width={200} height={200} alt="qr code" className="p-1 rounded-lg bg-gray-50 border dark:bg-gray-100"/>
           </div>
         </>

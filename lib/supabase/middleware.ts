@@ -11,8 +11,13 @@ function normalizeUrl(url: string): string {
 
 export async function shortenerMiddleware(req: NextRequest) {
   const url = req.nextUrl.clone()
+  const path = url.pathname
+  const allowedApis = ["/api/qr", "/api/shorten"]
 
-  if (url.pathname !== "/" && (!url.pathname.startsWith("/api/qr") || !url.pathname.startsWith("/api/shorten") )) {
+  if (
+    path !== "/" &&
+    (!path.startsWith("/api") || allowedApis.includes(path) === false)
+  ) {
     const code = url.pathname.slice(1) // ambil kode tanpa "/"
 
     const { data } = await supabase
